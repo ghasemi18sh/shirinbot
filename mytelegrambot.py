@@ -2,6 +2,7 @@ from email import message
 from tracemalloc import start
 import telebot
 import random
+import qrcode
 from telebot import types
 bot = telebot.TeleBot("5158247388:AAGj0293-UKxZDXDv2IMIeMseEH1vGVpDfk")
 
@@ -35,5 +36,14 @@ def start_message(message):
       bot.reply_to(message,'up')
     elif a>rdm:
       bot.reply_to(message,'down')
+@bot.message_handler(commands=['qrcode'])
+def creat_qr(message):
+    bot.send_message(message.chat.id, 'Enter text ')
+    @bot.message_handler(content_types=['text'])
+    def creat_qr(message):
+        qrcode_image =  qrcode.make("message.text")
+        qrcode_image.save('qrcode.png.png')
+        photo = open('qrcode.png.png','rb')
+        bot.send_photo(message.chat.id, photo)
 
 bot.infinity_polling()
